@@ -1,6 +1,14 @@
-import { Offer } from "../Offer";
+import { Offer } from "../Offers/Offer";
+import { useState, useEffect } from "react";
 
 export const LatestOffersSection = () => {
+  const [offers, setNewOffers] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:3030/data/offers/")
+      .then((res) => res.json())
+      .then((data) => setNewOffers(data));
+  }, []);
+
   return (
     <>
       <div className="container-fluid tm-container-content tm-mt-60">
@@ -9,8 +17,9 @@ export const LatestOffersSection = () => {
         </div>
       </div>
       <div className="row tm-mb-90 tm-gallery">
-        <Offer/>
+        {offers.slice(-3).map(offer => <Offer key={offer._id} {...offer}/>)}
       </div>
+
     </>
   );
 };
