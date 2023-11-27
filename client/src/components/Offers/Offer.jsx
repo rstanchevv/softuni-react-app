@@ -15,6 +15,7 @@ export const Offer = ({title, img, _createdOn, price}) => {
       </figure>
       <div className="d-flex justify-content-between tm-text-gray">
         <span className="tm-text-gray-light">{dateConverter(_createdOn)}</span>
+        <span>Category: Auto</span>
         <span>{price}lv</span>
       </div>
     </div>

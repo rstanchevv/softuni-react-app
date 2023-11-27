@@ -1,7 +1,7 @@
 export const Footer = () => {
   return (
-    <footer className="tm-bg-gray pt-5 pb-3 tm-text-gray tm-footer">
-      <div className="container-fluid tm-container-small">
+    <footer className="tm-bg-gray pt-5 pb-3 tm-text-gray mt-auto">
+      <div className="container-fluid tm-container-large ">
         <div className="row">
           <div className="col-lg-6 col-md-12 col-12 px-5 mb-5">
             <h3 className="tm-text-primary mb-4 tm-footer-title">

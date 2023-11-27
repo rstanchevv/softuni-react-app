@@ -1,12 +1,17 @@
 import { Offer } from "../Offers/Offer";
 import { useState, useEffect } from "react";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export const LatestOffersSection = () => {
+  const [loadingSpinnerState, setLoadingSpinner] = useState(false)
   const [offers, setNewOffers] = useState([]);
   useEffect(() => {
+    setLoadingSpinner(true)
     fetch("http://localhost:3030/data/offers/")
       .then((res) => res.json())
-      .then((data) => setNewOffers(data));
+      .then((data) => {
+        setLoadingSpinner(false)
+        setNewOffers(data)});
   }, []);
 
   return (
@@ -17,9 +22,9 @@ export const LatestOffersSection = () => {
         </div>
       </div>
       <div className="row tm-mb-90 tm-gallery">
-        {offers.slice(-3).map(offer => <Offer key={offer._id} {...offer}/>)}
+        {loadingSpinnerState && <LoadingSpinner/>}
+        {offers.slice(-4).map(offer => <Offer key={offer._id} {...offer}/>)}
       </div>
-
     </>
   );
 };
