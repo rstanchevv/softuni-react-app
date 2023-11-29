@@ -2,7 +2,7 @@ export const Login = () => {
   return (
     <form>
       <div className="mb-3">
-        <label for="exampleInputEmail1" className="form-label">
+        <label htmlFor="exampleInputEmail1" className="form-label">
           Email address
         </label>
         <input
@@ -16,7 +16,7 @@ export const Login = () => {
         </div>
       </div>
       <div className="mb-3">
-        <label for="password" className="form-label">
+        <label htmlFor="password" className="form-label">
           Password
         </label>
         <input type="password" className="form-control" id="password" />
