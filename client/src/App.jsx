@@ -2,7 +2,7 @@ import { Navigation } from "./components/Navigation/Navigation";
 import { PageLoader } from "./components/Home/PageLoader";
 import { HeroSection } from "./components/Home/HeroSection";
 import { Footer } from "./components/Footer/Footer";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
 import { AllOfferComponents } from "./components/Offers/AllOffersComponent";
@@ -16,7 +16,10 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 
 const auth = getAuth();
 
+
 function App() {
+  const [authInfo, setAuthInfo] = useState();
+  const navigate = useNavigate()
   const registerSubmitHandler = (values) => {
     if (values.password !== values.rePassword){
       throw new Error('Passwords don\'t match')
@@ -25,7 +28,8 @@ function App() {
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
-        console.log(user)
+        setAuthInfo(user)
+        navigate('/')
         // ...
       })
       .catch((error) => {
@@ -40,7 +44,8 @@ function App() {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      console.log(user)
+      setAuthInfo(user)
+      navigate('/')
       // ...
     })
     .catch((error) => {
@@ -59,7 +64,7 @@ function App() {
   return (
     <>
       <PageLoader />
-      <Navigation location={currentLocation} />
+      <Navigation location={currentLocation} authInfo={authInfo} />
       <Routes>
         <Route path="/" element={<HeroSection />}></Route>
         <Route

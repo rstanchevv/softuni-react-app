@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 
-export const Navigation = ({location}) => {
+export const Navigation = ({location, authInfo}) => {
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
@@ -31,17 +31,17 @@ export const Navigation = ({location}) => {
                 Offers
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" hidden={authInfo ? 'true' : ''}>
               <Link className={location == '/login' ? 'nav-link nav-link-2 active' : 'nav-link nav-link-2'}  to="/login">
                   Login
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" hidden={authInfo ? 'true' : ''}>
               <Link className={location == '/register' ? 'nav-link nav-link-3 active' : 'nav-link nav-link-3'}  to="/register">
                 Sign up
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" hidden={!authInfo ? 'true' : ''}>
               <a className={location == '/profile' ? 'nav-link nav-link-4 active' : 'nav-link nav-link-4'} href="/profile">
                 Profile
               </a>
