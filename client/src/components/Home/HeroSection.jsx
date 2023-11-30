@@ -25,7 +25,7 @@ export const HeroSection = () => {
       <div className="lc-block col-lg-6 mx-auto mb-4">
         <div editable="rich">
           <p className="lead ">
-            You are annoyed from paid applications to place the items you no longer need? Or maybe you want to buy something on a good price? 
+            You are annoyed by applications where you need to pay for placing the items you no longer need? Or maybe you want to buy something on a good price? 
             OfferHub is the best place for you! What are you waiting for, you just have to sign in and dive into the offers.
           </p>
         </div>
