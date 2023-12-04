@@ -1,4 +1,4 @@
-export const OfferDetailsCompnent = () => {
+export const OfferDetailsCompnent = ({offer}) => {
     return (
         <div className="container-fluid tm-container-content tm-mt-60">
         <div className="row mb-4">

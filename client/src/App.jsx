@@ -9,51 +9,53 @@ import { AllOfferComponents } from "./components/Offers/AllOffersComponent";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { OfferDetailsCompnent } from "./components/Offers/OfferDetailsComponent";
-
-// import styles from './components/Home/homeSection.modules.css'
-
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-
-const auth = getAuth();
-
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut
+} from "firebase/auth";
+import { ErrorNotification } from "./components/Home/ErrorNotification";
 
 function App() {
+  const auth = getAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const [authInfo, setAuthInfo] = useState();
-  const navigate = useNavigate()
+
   const registerSubmitHandler = (values) => {
-    if (values.password !== values.rePassword){
-      throw new Error('Passwords don\'t match')
+    if (values.password !== values.rePassword) {
+      alert('Passwords don\'t match')
     }
     createUserWithEmailAndPassword(auth, values.email, values.password)
       .then((userCredential) => {
-        // Signed up
         const user = userCredential.user;
-        setAuthInfo(user)
-        navigate('/')
-        // ...
+        setAuthInfo(user);
+        setError(null);
+        navigate("/");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage)
-        // ..
+        alert("Email is already in use");
       });
   };
+
   const loginSubmitHandler = (values) => {
     signInWithEmailAndPassword(auth, values.email, values.password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      setAuthInfo(user)
-      navigate('/')
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error.message)
-    });
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setAuthInfo(user);
+        setError(null);
+        navigate("/");
+      })
+      .catch((error) => {
+        setError("Invalid credentials");
+      });
   };
+
+  const signOutHandler = () => {
+    signOut(auth).then(alert(`Signed out successfully`))
+    setAuthInfo(null)
+  }
 
   const location = useLocation();
   const [currentLocation, setNewLocation] = useState("");
@@ -64,14 +66,18 @@ function App() {
   return (
     <>
       <PageLoader />
-      <Navigation location={currentLocation} authInfo={authInfo} />
+      <Navigation location={currentLocation} authInfo={authInfo} signOutHandler={signOutHandler} />
+      {error && <ErrorNotification error={error} />}
       <Routes>
         <Route path="/" element={<HeroSection />}></Route>
         <Route
           path="/login"
           element={<Login loginSubmitHandler={loginSubmitHandler} />}
         ></Route>
-        <Route path="/register" element={<Register registerSubmitHandler={registerSubmitHandler}/>}></Route>
+        <Route
+          path="/register"
+          element={<Register registerSubmitHandler={registerSubmitHandler} />}
+        ></Route>
         <Route path="/catalog" element={<AllOfferComponents />}></Route>
         <Route
           path="/catalog/:catalogId"
