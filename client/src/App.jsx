@@ -13,7 +13,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
 } from "firebase/auth";
 import { ErrorNotification } from "./components/Home/ErrorNotification";
 
@@ -25,7 +25,19 @@ function App() {
 
   const registerSubmitHandler = (values) => {
     if (values.password !== values.rePassword) {
-      alert('Passwords don\'t match')
+      setError("Passwords don't match");
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+      return
+      
+    }
+    if (values.password.length < 6){
+      setError("Password must be at least 6 characters.")
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+      return
     }
     createUserWithEmailAndPassword(auth, values.email, values.password)
       .then((userCredential) => {
@@ -35,7 +47,10 @@ function App() {
         navigate("/");
       })
       .catch((error) => {
-        alert("Email is already in use");
+        setError("Email is already in use");
+        setTimeout(() => {
+          setError(null);
+        }, 2000);
       });
   };
 
@@ -48,14 +63,17 @@ function App() {
         navigate("/");
       })
       .catch((error) => {
-        setError("Invalid credentials");
+        setError("Email or password incorrect");
+        setTimeout(() => {
+          setError(null);
+        }, 2000);
       });
   };
 
   const signOutHandler = () => {
-    signOut(auth).then(alert(`Signed out successfully`))
-    setAuthInfo(null)
-  }
+    signOut(auth).then(alert(`Signed out successfully`));
+    setAuthInfo(null);
+  };
 
   const location = useLocation();
   const [currentLocation, setNewLocation] = useState("");
@@ -66,7 +84,11 @@ function App() {
   return (
     <>
       <PageLoader />
-      <Navigation location={currentLocation} authInfo={authInfo} signOutHandler={signOutHandler} />
+      <Navigation
+        location={currentLocation}
+        authInfo={authInfo}
+        signOutHandler={signOutHandler}
+      />
       {error && <ErrorNotification error={error} />}
       <Routes>
         <Route path="/" element={<HeroSection />}></Route>

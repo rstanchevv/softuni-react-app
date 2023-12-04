@@ -1,8 +1,7 @@
-export const ErrorNotification = ({error}) => {
-  
+import { useEffect, useState } from "react";
+
+export const ErrorNotification = ({ error }) => {
   return (
-    <div className="alert alert-primary" role="alert">
-      {error}
-    </div>
+    <>{error && <div className="alert alert-primary" role="alert">{error}</div>}</>
   );
 };
