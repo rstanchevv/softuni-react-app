@@ -19,7 +19,6 @@ function App() {
   const [error, setError] = useState(null);
   const [authInfo, setAuthInfo] = useState();
 
-
   const registerSubmitHandler = async (values) => {
     try {
       const user = await register(values);
@@ -57,7 +56,6 @@ function App() {
     setNewLocation(location.pathname);
   });
 
-  console.log(authInfo)
 
   return (
     <AuthContext.Provider value={{authInfo}}>

@@ -7,7 +7,6 @@ export const AllOfferComponents = () => {
     const [loadingSpinnerState, setLoadingSpinner] = useState(false);
     const [offers, setNewOffers] = useState([]);
     useEffect(() => {
-      console.log('mounted')
       setLoadingSpinner(true);
       getAllOffers()
       .then(res => {
@@ -26,7 +25,7 @@ export const AllOfferComponents = () => {
         <div className="row tm-mb-90 tm-gallery">
           {loadingSpinnerState && <LoadingSpinner />}
           {offers.map((offer) => (
-            <Offer key={offer.id} {...offer.data} id={offer.id}  />
+            <Offer key={offer.id} {...offer.data} id={offer.id}/>
           ))}
         </div>
       </>

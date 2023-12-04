@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/authContext";
 
 export const Navigation = ({ location, signOutHandler }) => {
-  const { authInfo } = useContext(AuthContext);
+  const {authInfo} = useContext(AuthContext)
+  console.log(authInfo)
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
