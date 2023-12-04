@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../contexts/authContext";
 
-export const Navigation = ({ location, authInfo, signOutHandler }) => {
+export const Navigation = ({ location, signOutHandler }) => {
+  const { authInfo } = useContext(AuthContext);
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
@@ -58,28 +61,32 @@ export const Navigation = ({ location, authInfo, signOutHandler }) => {
               </Link>
             </li>
             <li className="nav-item" hidden={!authInfo ? true : ""}>
-              <a
+              <Link
                 className={
                   location == "/profile"
                     ? "nav-link nav-link-4 active"
                     : "nav-link nav-link-4"
                 }
-                href="/profile"
+                to="/profile"
               >
                 Profile
-              </a>
+              </Link>
             </li>
-            <li className="nav-item" hidden={!authInfo ? true : ""} onClick={signOutHandler}>
-              <a
+            <li
+              className="nav-item"
+              hidden={!authInfo ? true : ""}
+              onClick={signOutHandler}
+            >
+              <Link
                 className={
-                  location == "/profile"
+                  location == "/logout"
                     ? "nav-link nav-link-5 active"
                     : "nav-link nav-link-5"
                 }
-                href="/"
+                to="/"
               >
                 Logout
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

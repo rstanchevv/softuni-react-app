@@ -1,8 +1,24 @@
-export const OfferDetailsCompnent = ({offer}) => {
+import { useParams } from "react-router-dom"
+import { getAnOffer } from "../../service/offersService"
+import { useEffect, useState } from "react"
+
+export const OfferDetailsCompnent = () => {
+
+    const {id} = useParams()
+    console.log(id)
+    const [offer, setOffer] = useState();
+
+    useEffect(() => {
+        const offerFetch = async () => {
+            const offer = await getAnOffer(id)
+            setOffer(offer)
+        }
+        offerFetch()
+    }, [])
     return (
         <div className="container-fluid tm-container-content tm-mt-60">
         <div className="row mb-4">
-            <h2 className="col-12 tm-text-primary">Photo title goes here</h2>
+            <h2 className="col-12 tm-text-primary">{offer.title}</h2>
         </div>
         <div className="row tm-mb-90">            
             <div className="col-xl-8 col-lg-7 col-md-6 col-sm-12">

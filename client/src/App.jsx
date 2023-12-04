@@ -9,69 +9,45 @@ import { AllOfferComponents } from "./components/Offers/AllOffersComponent";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { OfferDetailsCompnent } from "./components/Offers/OfferDetailsComponent";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
 import { ErrorNotification } from "./components/Home/ErrorNotification";
+import { login, logout, register} from "./lib/auth";
+import AuthContext from "./contexts/authContext";
+import { HeroSectionAuthenticated } from "./components/Home/HeroSectionAuthenticated";
 
 function App() {
-  const auth = getAuth();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [authInfo, setAuthInfo] = useState();
 
-  const registerSubmitHandler = (values) => {
-    if (values.password !== values.rePassword) {
-      setError("Passwords don't match");
+
+  const registerSubmitHandler = async (values) => {
+    try {
+      const user = await register(values);
+      setAuthInfo(user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
       setTimeout(() => {
         setError(null);
       }, 2000);
-      return
-      
     }
-    if (values.password.length < 6){
-      setError("Password must be at least 6 characters.")
-      setTimeout(() => {
-        setError(null);
-      }, 2000);
-      return
-    }
-    createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setAuthInfo(user);
-        setError(null);
-        navigate("/");
-      })
-      .catch((error) => {
-        setError("Email is already in use");
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
-      });
   };
 
-  const loginSubmitHandler = (values) => {
-    signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setAuthInfo(user);
+  const loginSubmitHandler = async (values) => {
+    try {
+      const user = await login(values);
+      setAuthInfo(user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+      setTimeout(() => {
         setError(null);
-        navigate("/");
-      })
-      .catch((error) => {
-        setError("Email or password incorrect");
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
-      });
+      }, 2000);
+    }
   };
 
   const signOutHandler = () => {
-    signOut(auth).then(alert(`Signed out successfully`));
+    logout()
     setAuthInfo(null);
   };
 
@@ -81,17 +57,19 @@ function App() {
     setNewLocation(location.pathname);
   });
 
+  console.log(authInfo)
+
   return (
-    <>
+    <AuthContext.Provider value={{authInfo}}>
       <PageLoader />
       <Navigation
         location={currentLocation}
-        authInfo={authInfo}
         signOutHandler={signOutHandler}
       />
       {error && <ErrorNotification error={error} />}
       <Routes>
-        <Route path="/" element={<HeroSection />}></Route>
+        <Route path="/" element={authInfo && <HeroSectionAuthenticated/>  || <HeroSection /> }></Route>
+        <Route path="/logout" element={<HeroSection/>}></Route>
         <Route
           path="/login"
           element={<Login loginSubmitHandler={loginSubmitHandler} />}
@@ -102,12 +80,12 @@ function App() {
         ></Route>
         <Route path="/catalog" element={<AllOfferComponents />}></Route>
         <Route
-          path="/catalog/:catalogId"
+          path="/catalog/:id"
           element={<OfferDetailsCompnent />}
         ></Route>
       </Routes>
       <Footer />
-    </>
+    </AuthContext.Provider>
   );
 }
 
