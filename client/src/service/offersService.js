@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, deleteDoc } from "firebase/firestore"
+import { addDoc, collection, doc, getDoc, getDocs, deleteDoc, setDoc } from "firebase/firestore"
 import { db } from "../lib/init-firebase"
 
 export const getAllOffers = async() => {
@@ -32,4 +32,8 @@ export async function createOffer(data) {
 
 export async function deleteOffer(id) {
     await deleteDoc(doc(db, 'offers', id))
+}
+
+export async function editOffer(id, data){
+    await setDoc(doc(db, 'offers', id), data)
 }

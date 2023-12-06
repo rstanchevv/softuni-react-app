@@ -13,7 +13,7 @@ import { login, logout, register } from "./lib/auth";
 import AuthContext from "./contexts/authContext";
 import { HeroSectionAuthenticated } from "./components/Home/HeroSectionAuthenticated";
 import { AddOfferForm } from "./components/Offers/AddOfferForm";
-import { createOffer, deleteOffer } from "./service/offersService";
+import { createOffer, deleteOffer, editOffer } from "./service/offersService";
 import RequireAuth from "./components/requireAuth";
 import { EditOfferForm } from "./components/Offers/EditOfferForm";
 
@@ -60,17 +60,40 @@ function App() {
       setTimeout(() => {
         setError(null);
       }, 2000);
-      return
+      return;
     }
     try {
       const res = { ...values, ownerId: authInfo.uid };
       await createOffer(res);
       navigate("/");
     } catch (err) {
-      console.log(err);
+      setError(err.message);
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
     }
   };
 
+  const editOfferSubmitHandler = async (values,id) => {
+    const emptyFields = Object.values(values).some((x) => x == "");
+    if (emptyFields) {
+      setError("All fields are mandatory!");
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+      return;
+    }
+    try {
+      const res = { ...values, ownerId: authInfo.uid };
+      await editOffer(id, res);
+      navigate(`/catalog/${id}`);
+    } catch (err) {
+      setError(err.message);
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+    }
+  };
 
   return (
     <AuthContext.Provider value={{ authInfo }}>
@@ -84,18 +107,23 @@ function App() {
             (authInfo && <HeroSectionAuthenticated />) || <HeroSection />
           }
         ></Route>
-        <Route element={<RequireAuth/>}>
-        <Route path="/logout" element={<HeroSection />}></Route>
-        <Route path="/catalog/:id/delete" element={<AllOfferComponents/>}></Route>
-        <Route path="/catalog/:id/edit" element={<EditOfferForm/>}></Route>
-        <Route
-          path="/add-offer"
-          element={
-            <AddOfferForm createOfferSubmitHandler={createOfferSubmitHandler} />
-          }
-        ></Route>
+        <Route element={<RequireAuth />}>
+          <Route path="/logout" element={<HeroSection />}></Route>
+          <Route
+            path="/catalog/:id/delete"
+            element={<AllOfferComponents />}
+          ></Route>
+          <Route path="/catalog/:id/edit" element={<EditOfferForm editOfferSubmitHandler={editOfferSubmitHandler}/>}></Route>
+          <Route
+            path="/add-offer"
+            element={
+              <AddOfferForm
+                createOfferSubmitHandler={createOfferSubmitHandler}
+              />
+            }
+          ></Route>
         </Route>
-        
+
         <Route
           path="/login"
           element={<Login loginSubmitHandler={loginSubmitHandler} />}
@@ -105,7 +133,7 @@ function App() {
           element={<Register registerSubmitHandler={registerSubmitHandler} />}
         ></Route>
         <Route path="/catalog" element={<AllOfferComponents />}></Route>
-        <Route path="/catalog/:id" element={<OfferDetailsCompnent/>}></Route>
+        <Route path="/catalog/:id" element={<OfferDetailsCompnent />}></Route>
       </Routes>
       <Footer />
     </AuthContext.Provider>
