@@ -6,13 +6,16 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
 import { AllOfferComponents } from "./components/Offers/AllOffersComponent";
-import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { OfferDetailsCompnent } from "./components/Offers/OfferDetailsComponent";
 import { ErrorNotification } from "./components/Home/ErrorNotification";
-import { login, logout, register} from "./lib/auth";
+import { login, logout, register } from "./lib/auth";
 import AuthContext from "./contexts/authContext";
 import { HeroSectionAuthenticated } from "./components/Home/HeroSectionAuthenticated";
+import { AddOfferForm } from "./components/Offers/AddOfferForm";
+import { createOffer, deleteOffer } from "./service/offersService";
+import RequireAuth from "./components/requireAuth";
+import { EditOfferForm } from "./components/Offers/EditOfferForm";
 
 function App() {
   const navigate = useNavigate();
@@ -46,28 +49,64 @@ function App() {
   };
 
   const signOutHandler = () => {
-    logout()
+    logout();
     setAuthInfo(null);
   };
 
-  const location = useLocation();
-  const [currentLocation, setNewLocation] = useState("");
-  useEffect(() => {
-    setNewLocation(location.pathname);
-  });
+  const createOfferSubmitHandler = async (values) => {
+    const emptyFields = Object.values(values).some((x) => x == "");
+    if (emptyFields) {
+      setError("All fields are mandatory!");
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+      return
+    }
+    try {
+      const res = { ...values, ownerId: authInfo.uid };
+      await createOffer(res);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
+  const deleteOfferHandler = async (id) => {
+    try {
+      await deleteOffer(id);
+      navigate("/catalog");
+    } catch (err) {
+      setError(`Unable to delete due to ${err.message}`);
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{authInfo}}>
+    <AuthContext.Provider value={{ authInfo }}>
       <PageLoader />
-      <Navigation
-        location={currentLocation}
-        signOutHandler={signOutHandler}
-      />
+      <Navigation signOutHandler={signOutHandler} />
       {error && <ErrorNotification error={error} />}
       <Routes>
-        <Route path="/" element={authInfo && <HeroSectionAuthenticated/>  || <HeroSection /> }></Route>
-        <Route path="/logout" element={<HeroSection/>}></Route>
+        <Route
+          path="/"
+          element={
+            (authInfo && <HeroSectionAuthenticated />) || <HeroSection />
+          }
+        ></Route>
+        <Route element={<RequireAuth/>}>
+        <Route path="/logout" element={<HeroSection />}></Route>
+        <Route path="/catalog/:id/delete" element={<AllOfferComponents/>}></Route>
+        <Route path="/catalog/:id/edit" element={<EditOfferForm/>}></Route>
+        <Route
+          path="/add-offer"
+          element={
+            <AddOfferForm createOfferSubmitHandler={createOfferSubmitHandler} />
+          }
+        ></Route>
+        </Route>
+        
         <Route
           path="/login"
           element={<Login loginSubmitHandler={loginSubmitHandler} />}
@@ -77,10 +116,7 @@ function App() {
           element={<Register registerSubmitHandler={registerSubmitHandler} />}
         ></Route>
         <Route path="/catalog" element={<AllOfferComponents />}></Route>
-        <Route
-          path="/catalog/:id"
-          element={<OfferDetailsCompnent />}
-        ></Route>
+        <Route path="/catalog/:id" element={<OfferDetailsCompnent deleteOfferHandler={deleteOfferHandler}/>}></Route>
       </Routes>
       <Footer />
     </AuthContext.Provider>

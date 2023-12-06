@@ -1,14 +1,15 @@
 import useForm from "../../hooks/useForm";
+import styles from "./Login.module.css";
 
-export const Login = ({loginSubmitHandler}) => {
+export const Login = ({ loginSubmitHandler }) => {
   const { values, changeHandler, submitHandler } = useForm(loginSubmitHandler, {
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   return (
     <form onSubmit={submitHandler}>
-      <div className="mb-3">
+      <div className={styles.inputFields}>
         <label htmlFor="exampleInputEmail1" className="form-label">
           Email address
         </label>
@@ -19,13 +20,10 @@ export const Login = ({loginSubmitHandler}) => {
           aria-describedby="emailHelp"
           name="email"
           onChange={changeHandler}
-          value={values['email']}
+          value={values["email"]}
         />
-        <div id="emailHelp" className="form-text">
-          We'll never share your email with anyone else.
-        </div>
       </div>
-      <div className="mb-3">
+      <div className={styles.inputFields}>
         <label htmlFor="password" className="form-label">
           Password
         </label>
@@ -35,12 +33,12 @@ export const Login = ({loginSubmitHandler}) => {
           id="password"
           name="password"
           onChange={changeHandler}
-          value={values['password']}
+          value={values["password"]}
         />
       </div>
-      <button className="btn btn-primary">
-        Login
-      </button>
+      <div className={styles.btnContainer}>
+        <button className="btn btn-primary">Login</button>
+      </div>
     </form>
   );
 };

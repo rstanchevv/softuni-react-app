@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Offer } from "./OfferComponent";
 import { LoadingSpinner } from "../Home/LoadingSpinner";
 import { getAllOffers } from "../../service/offersService";
+import { NoOffersYet } from "./NoOffersYet";
 
 export const AllOfferComponents = () => {
     const [loadingSpinnerState, setLoadingSpinner] = useState(false);
@@ -24,7 +25,7 @@ export const AllOfferComponents = () => {
         </div>
         <div className="row tm-mb-90 tm-gallery">
           {loadingSpinnerState && <LoadingSpinner />}
-          {offers.map((offer) => (
+          {offers.length < 1 && <NoOffersYet/> || offers.map((offer) => (
             <Offer key={offer.id} {...offer.data} id={offer.id}/>
           ))}
         </div>

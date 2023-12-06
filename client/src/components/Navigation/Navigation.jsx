@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../../contexts/authContext";
 
-export const Navigation = ({ location, signOutHandler }) => {
-  const {authInfo} = useContext(AuthContext)
-  console.log(authInfo)
+export const Navigation = ({ signOutHandler }) => {
+  const location = useLocation();
+  const { authInfo } = useContext(AuthContext);
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
@@ -24,10 +24,25 @@ export const Navigation = ({ location, signOutHandler }) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
+            <li
+              className="nav-item"
+              hidden={!authInfo ? true : ""}
+            >
+              <Link
+                className={
+                  location.pathname == "/add-offer"
+                    ? "nav-link nav-link-6 active"
+                    : "nav-link nav-link-6"
+                }
+                to="/add-offer"
+              >
+                Add offer
+              </Link>
+            </li>
             <li className="nav-item">
               <Link
                 className={
-                  location == "/catalog"
+                  location.pathname == "/catalog"
                     ? "nav-link nav-link-1 active"
                     : "nav-link nav-link-1"
                 }
@@ -40,7 +55,7 @@ export const Navigation = ({ location, signOutHandler }) => {
             <li className="nav-item" hidden={authInfo ? true : ""}>
               <Link
                 className={
-                  location == "/login"
+                  location.pathname == "/login"
                     ? "nav-link nav-link-2 active"
                     : "nav-link nav-link-2"
                 }
@@ -52,7 +67,7 @@ export const Navigation = ({ location, signOutHandler }) => {
             <li className="nav-item" hidden={authInfo ? true : ""}>
               <Link
                 className={
-                  location == "/register"
+                  location.pathname == "/register"
                     ? "nav-link nav-link-3 active"
                     : "nav-link nav-link-3"
                 }
@@ -64,7 +79,7 @@ export const Navigation = ({ location, signOutHandler }) => {
             <li className="nav-item" hidden={!authInfo ? true : ""}>
               <Link
                 className={
-                  location == "/profile"
+                  location.pathname == "/profile"
                     ? "nav-link nav-link-4 active"
                     : "nav-link nav-link-4"
                 }
@@ -80,7 +95,7 @@ export const Navigation = ({ location, signOutHandler }) => {
             >
               <Link
                 className={
-                  location == "/logout"
+                  location.pathname == "/logout"
                     ? "nav-link nav-link-5 active"
                     : "nav-link nav-link-5"
                 }
