@@ -6,13 +6,20 @@ import { NoOffersYet } from "./NoOffersYet";
 
 export const AllOfferComponents = () => {
     const [loadingSpinnerState, setLoadingSpinner] = useState(false);
+    const [showNoOffers, setShowNoOffers] = useState(false)
     const [offers, setNewOffers] = useState([]);
     useEffect(() => {
       setLoadingSpinner(true);
       getAllOffers()
       .then(res => {
         setNewOffers(res);
-        setLoadingSpinner(false)
+        if (res.length < 1){
+          setLoadingSpinner(false)
+          setShowNoOffers(true)
+        } else {
+          setLoadingSpinner(false)
+          setShowNoOffers(false)
+        }
       })
     }, []);
   
@@ -25,7 +32,7 @@ export const AllOfferComponents = () => {
         </div>
         <div className="row tm-mb-90 tm-gallery">
           {loadingSpinnerState && <LoadingSpinner />}
-          {offers.length < 1 && <NoOffersYet/> || offers.map((offer) => (
+          {showNoOffers && <NoOffersYet/> || offers.map((offer) => (
             <Offer key={offer.id} {...offer.data} id={offer.id}/>
           ))}
         </div>

@@ -71,17 +71,6 @@ function App() {
     }
   };
 
-  const deleteOfferHandler = async (id) => {
-    try {
-      await deleteOffer(id);
-      navigate("/catalog");
-    } catch (err) {
-      setError(`Unable to delete due to ${err.message}`);
-      setTimeout(() => {
-        setError(null);
-      }, 2000);
-    }
-  };
 
   return (
     <AuthContext.Provider value={{ authInfo }}>
@@ -116,7 +105,7 @@ function App() {
           element={<Register registerSubmitHandler={registerSubmitHandler} />}
         ></Route>
         <Route path="/catalog" element={<AllOfferComponents />}></Route>
-        <Route path="/catalog/:id" element={<OfferDetailsCompnent deleteOfferHandler={deleteOfferHandler}/>}></Route>
+        <Route path="/catalog/:id" element={<OfferDetailsCompnent/>}></Route>
       </Routes>
       <Footer />
     </AuthContext.Provider>

@@ -34,7 +34,7 @@ export const OfferDetailsCompnent = () => {
   const deleteOfferHandler = async () => {
     try {
       await deleteOffer(id);
-
+      navigate('/catalog')
     } catch (err) {
       console.log(err);
     }
@@ -64,7 +64,7 @@ export const OfferDetailsCompnent = () => {
                       <Link to={`/catalog/${id}/edit`} className={styles.btn}>
                         Edit
                       </Link>
-                      <Link to={`/catalog/${id}/delete`}onClick={deleteOfferHandler} className={styles.btn}>
+                      <Link to={`/catalog/${id}/delete`} onClick={deleteOfferHandler} className={styles.btn}>
                         Delete
                       </Link>
                     </>
