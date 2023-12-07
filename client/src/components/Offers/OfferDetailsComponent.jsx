@@ -61,7 +61,7 @@ export const OfferDetailsCompnent = () => {
                   )}
                   {isOwner && (
                     <>
-                      <Link to={`/catalog/${id}/edit`} className={styles.btn}>
+                      <Link to={`/catalog/${id}/edit`} state={{...offer}} className={styles.btn}>
                         Edit
                       </Link>
                       <Link to={`/catalog/${id}/delete`} onClick={deleteOfferHandler} className={styles.btn}>

@@ -5,37 +5,37 @@ import { getAllOffers } from "../../service/offersService";
 import { NoOffersYet } from "./NoOffersYet";
 
 export const AllOfferComponents = () => {
-    const [loadingSpinnerState, setLoadingSpinner] = useState(false);
-    const [showNoOffers, setShowNoOffers] = useState(false)
-    const [offers, setNewOffers] = useState([]);
-    useEffect(() => {
-      setLoadingSpinner(true);
-      getAllOffers()
-      .then(res => {
-        setNewOffers(res);
-        if (res.length < 1){
-          setLoadingSpinner(false)
-          setShowNoOffers(true)
-        } else {
-          setLoadingSpinner(false)
-          setShowNoOffers(false)
-        }
-      })
-    }, []);
-  
-    return (
-      <>
-        <div className="container-fluid tm-container-content tm-mt-60">
-          <div className="row mb-4">
-            <h2 className="col-6 tm-text-primary">All Offers</h2>
-          </div>
+  const [loadingSpinnerState, setLoadingSpinner] = useState(false);
+  const [showNoOffers, setShowNoOffers] = useState(false);
+  const [offers, setNewOffers] = useState([]);
+  useEffect(() => {
+    setLoadingSpinner(true);
+    getAllOffers().then((res) => {
+      setNewOffers(res);
+      if (res.length < 1) {
+        setLoadingSpinner(false);
+        setShowNoOffers(true);
+      } else {
+        setLoadingSpinner(false);
+        setShowNoOffers(false);
+      }
+    });
+  }, []);
+
+  return (
+    <>
+      <div className="container-fluid tm-container-content tm-mt-60">
+        <div className="row mb-4">
+          <h2 className="col-6 tm-text-primary">All Offers</h2>
         </div>
-        <div className="row tm-mb-90 tm-gallery">
-          {loadingSpinnerState && <LoadingSpinner />}
-          {showNoOffers && <NoOffersYet/> || offers.map((offer) => (
-            <Offer key={offer.id} {...offer.data} id={offer.id}/>
+      </div>
+      <div className="row tm-mb-90 tm-gallery">
+        {loadingSpinnerState && <LoadingSpinner />}
+        {(showNoOffers && <NoOffersYet />) ||
+          offers.map((offer) => (
+            <Offer key={offer.id} {...offer.data} id={offer.id} />
           ))}
-        </div>
-      </>
-    );
-  };
+      </div>
+    </>
+  );
+};

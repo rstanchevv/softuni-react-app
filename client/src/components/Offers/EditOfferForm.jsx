@@ -1,39 +1,15 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getAnOffer } from "../../service/offersService";
+import { useLocation, useParams } from "react-router-dom";
 import styles from "./EditOfferForm.module.css";
 import useForm from "../../hooks/useForm";
-import { LoadingSpinner } from "../Home/LoadingSpinner";
 
 export const EditOfferForm = ({ editOfferSubmitHandler }) => {
+  const location = useLocation();
   const { id } = useParams();
   const { values, changeHandler, submitHandler } = useForm(
     editOfferSubmitHandler,
-    {
-      title: "",
-      category: "",
-      image: "",
-      price: "",
-      details: "",
-    },
+    location.state,
     id
   );
-
-  const [offer, setOffer] = useState({
-    title: "",
-    category: "",
-    image: "",
-    price: "",
-    details: "",
-  });
-
-  useEffect(() => {
-    const offerFetch = async () => {
-      const offer = await getAnOffer(id);
-      setOffer(offer);
-    };
-    offerFetch();
-  }, []);
 
   return (
     <>
@@ -46,8 +22,9 @@ export const EditOfferForm = ({ editOfferSubmitHandler }) => {
             type="text"
             className="form-control"
             id="title"
-            placeholder={offer.title}
+            placeholder=""
             name="title"
+            value={values.title}
             onChange={changeHandler}
           />
         </div>
@@ -59,8 +36,9 @@ export const EditOfferForm = ({ editOfferSubmitHandler }) => {
             type="text"
             className="form-control"
             id="category"
-            placeholder={offer.category}
+            placeholder=""
             name="category"
+            value={values.category}
             onChange={changeHandler}
           />
         </div>
@@ -72,8 +50,9 @@ export const EditOfferForm = ({ editOfferSubmitHandler }) => {
             type="imageUrl"
             className="form-control"
             id="image"
-            placeholder={offer.image}
+            placeholder=""
             name="image"
+            value={values.image}
             onChange={changeHandler}
           />
         </div>
@@ -85,7 +64,8 @@ export const EditOfferForm = ({ editOfferSubmitHandler }) => {
             type="number"
             className="form-control"
             id="price"
-            placeholder={offer.price}
+            placeholder=""
+            value={values.price}
             name="price"
             onChange={changeHandler}
           />
@@ -98,7 +78,8 @@ export const EditOfferForm = ({ editOfferSubmitHandler }) => {
             type="text"
             className="form-control"
             id="details"
-            placeholder={offer.details}
+            placeholder=""
+            value={values.details}
             name="details"
             onChange={changeHandler}
           />

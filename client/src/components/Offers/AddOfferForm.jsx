@@ -2,8 +2,8 @@ import { useState } from "react";
 import styles from "./AddOfferForm.module.css";
 import useForm from "../../hooks/useForm";
 
-export const AddOfferForm = ({createOfferSubmitHandler}) => {
-
+export const AddOfferForm = ({ createOfferSubmitHandler }) => {
+  const [errors, setErrors] = useState({});
   const { values, changeHandler, submitHandler } = useForm(
     createOfferSubmitHandler,
     {
@@ -11,8 +11,34 @@ export const AddOfferForm = ({createOfferSubmitHandler}) => {
       category: "",
       image: "",
       price: "",
-      details: ""
-    })
+      details: "",
+    }
+  );
+
+  const titleValidator = () => {
+    if (values.title.length < 3 || values.title.length > 30) {
+      setErrors((state) => ({
+        ...state,
+        title: "Title should be between 3 and 30 characters!",
+      }));
+    } else {
+      if (errors.title) {
+        setErrors((state) => ({ ...state, title: "" }));
+      }
+    }
+  };
+  const categoryValidator = () => {
+    if (values.category.length < 3 || values.category.length > 10) {
+      setErrors((state) => ({
+        ...state,
+        category: "Title should be between 3 and 10 characters!",
+      }));
+    } else {
+      if (errors.category) {
+        setErrors((state) => ({ ...state, category: "" }));
+      }
+    }
+  };
 
   return (
     <form onSubmit={submitHandler}>
@@ -22,12 +48,15 @@ export const AddOfferForm = ({createOfferSubmitHandler}) => {
         </label>
         <input
           type="text"
-          className="form-control"
+          className={"form-control"}
           id="title"
           placeholder="Example input"
           name="title"
+          value={values.title}
           onChange={changeHandler}
+          onBlur={titleValidator}
         />
+        {errors.title && <p className={styles.errorMessage}>{errors.title}</p>}
       </div>
       <div className={styles.inputFields}>
         <label className={styles.labels} htmlFor="category">
@@ -39,8 +68,11 @@ export const AddOfferForm = ({createOfferSubmitHandler}) => {
           id="category"
           placeholder="Another input"
           name="category"
+          value={values.category}
           onChange={changeHandler}
+          onBlur={categoryValidator}
         />
+        {errors.category && <p className={styles.errorMessage}>{errors.category}</p>}
       </div>
       <div className={styles.inputFields}>
         <label className={styles.labels} htmlFor="image">
@@ -52,6 +84,7 @@ export const AddOfferForm = ({createOfferSubmitHandler}) => {
           id="image"
           placeholder="Another input"
           name="image"
+          value={values.image}
           onChange={changeHandler}
         />
       </div>
@@ -65,6 +98,7 @@ export const AddOfferForm = ({createOfferSubmitHandler}) => {
           id="price"
           placeholder="Another input"
           name="price"
+          value={values.price}
           onChange={changeHandler}
         />
       </div>
@@ -78,14 +112,22 @@ export const AddOfferForm = ({createOfferSubmitHandler}) => {
           id="details"
           placeholder="Another input"
           name="details"
+          value={values.details}
           onChange={changeHandler}
         />
       </div>
       <div className={styles.btnContainer}>
-        <button className="btn btn-primary btn-lg px-4 gap-3" role="button">
+        <button
+          disabled={Object.values(errors).some(
+            (x) => x !== "" || Object.values(values).some((x) => x === "")
+          )}
+          className="btn btn-primary btn-lg px-4 gap-3"
+          role="button"
+        >
           Create
         </button>
       </div>
+      <div>Please note that all fields are mandatory!</div>
     </form>
   );
 };
