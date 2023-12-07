@@ -31,11 +31,50 @@ export const AddOfferForm = ({ createOfferSubmitHandler }) => {
     if (values.category.length < 3 || values.category.length > 10) {
       setErrors((state) => ({
         ...state,
-        category: "Title should be between 3 and 10 characters!",
+        category: "Category should be between 3 and 10 characters!",
       }));
     } else {
       if (errors.category) {
         setErrors((state) => ({ ...state, category: "" }));
+      }
+    }
+  };
+
+  const imageValidator = () => {
+    if (!values.image.match("^https?://")) {
+      setErrors((state) => ({
+        ...state,
+        image: "Image should be a link and should start with http://",
+      }));
+    } else {
+      if (errors.image) {
+        setErrors((state) => ({ ...state, image: "" }));
+      }
+    }
+  };
+
+  const priceValidator = () => {
+    if (values.price < 1 || values.price > 100000) {
+      setErrors((state) => ({
+        ...state,
+        price: "Price should be between 1 and 100000 lv.",
+      }));
+    } else {
+      if (errors.price) {
+        setErrors((state) => ({ ...state, price: "" }));
+      }
+    }
+  };
+
+  const detailsValidator = () => {
+    if (values.details.length < 10 || values.details.length > 300) {
+      setErrors((state) => ({
+        ...state,
+        details: "Details should be between 10 and 300 characters!",
+      }));
+    } else {
+      if (errors.details) {
+        setErrors((state) => ({ ...state, details: "" }));
       }
     }
   };
@@ -72,7 +111,9 @@ export const AddOfferForm = ({ createOfferSubmitHandler }) => {
           onChange={changeHandler}
           onBlur={categoryValidator}
         />
-        {errors.category && <p className={styles.errorMessage}>{errors.category}</p>}
+        {errors.category && (
+          <p className={styles.errorMessage}>{errors.category}</p>
+        )}
       </div>
       <div className={styles.inputFields}>
         <label className={styles.labels} htmlFor="image">
@@ -85,8 +126,10 @@ export const AddOfferForm = ({ createOfferSubmitHandler }) => {
           placeholder="Another input"
           name="image"
           value={values.image}
+          onBlur={imageValidator}
           onChange={changeHandler}
         />
+        {errors.image && <p className={styles.errorMessage}>{errors.image}</p>}
       </div>
       <div className={styles.inputFields}>
         <label className={styles.labels} htmlFor="price">
@@ -99,8 +142,10 @@ export const AddOfferForm = ({ createOfferSubmitHandler }) => {
           placeholder="Another input"
           name="price"
           value={values.price}
+          onBlur={priceValidator}
           onChange={changeHandler}
         />
+        {errors.price && <p className={styles.errorMessage}>{errors.price}</p>}
       </div>
       <div className={styles.inputFields}>
         <label className={styles.labels} htmlFor="details">
@@ -113,8 +158,10 @@ export const AddOfferForm = ({ createOfferSubmitHandler }) => {
           placeholder="Another input"
           name="details"
           value={values.details}
+          onBlur={detailsValidator}
           onChange={changeHandler}
         />
+        {errors.details && <p className={styles.errorMessage}>{errors.details}</p>}
       </div>
       <div className={styles.btnContainer}>
         <button

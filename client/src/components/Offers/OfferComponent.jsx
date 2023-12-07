@@ -7,7 +7,7 @@ export const Offer = ({ title, image, price, category, id }) => {
       <img src={image} alt="Image" className="img-fluid" />
       <figcaption className="d-flex align-items-center justify-content-center">
         <h2>{title}</h2>
-        <Link to={id}>View more</Link>
+        <Link to={`/catalog/${id}`}>View more</Link>
       </figcaption>
     </figure>
     <div className="d-flex justify-content-between tm-text-gray">

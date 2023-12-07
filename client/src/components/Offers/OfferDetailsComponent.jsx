@@ -1,17 +1,18 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteOffer, getAnOffer } from "../../service/offersService";
+import { buyOffer, deleteOffer, getAnOffer } from "../../service/offersService";
 import { useContext, useEffect, useState } from "react";
 import { LoadingSpinner } from "../Home/LoadingSpinner";
 import styles from "./OfferDetailsComponent.module.css";
 import AuthContext from "../../contexts/authContext";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 export const OfferDetailsCompnent = () => {
   const { authInfo } = useContext(AuthContext);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const [isOwner, setIsOwner] = useState(false)
-  const [isNotOwner, setIsNotOwner] = useState(false)
+  const [isOwner, setIsOwner] = useState(false);
+  const [isNotOwner, setIsNotOwner] = useState(false);
+  const [boughtState, setBoughtState] = useState(false);
   const [offer, setOffer] = useState();
   const navigate = useNavigate();
 
@@ -20,25 +21,37 @@ export const OfferDetailsCompnent = () => {
       const offer = await getAnOffer(id);
       setOffer(offer);
       setLoading(false);
-      if (authInfo){
-        if (authInfo.uid == offer.ownerId){
-          setIsOwner(true)
+      if (offer.bought == true) {
+        setBoughtState(true);
+      }
+      if (authInfo) {
+        if (authInfo.uid == offer.ownerId) {
+          setIsOwner(true);
         } else {
-          setIsNotOwner(true)
+          setIsNotOwner(true);
         }
       }
     };
     offerFetch();
   }, []);
 
-  const deleteOfferHandler = async () => {
+  const buyOfferHandler = async () => {
     try {
-      await deleteOffer(id);
-      navigate('/catalog')
+      await buyOffer(id, offer, authInfo.uid);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const deleteOfferHandler = async () => {
+    try {
+      await deleteOffer(id);
+      navigate("/catalog");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       {(loading && <LoadingSpinner />) || (
@@ -54,17 +67,47 @@ export const OfferDetailsCompnent = () => {
               <div className="tm-bg-gray tm-video-details">
                 <p className="mb-4"></p>
                 <div className="text-justify mb-3">
-                  {isNotOwner && (
-                    <Link to="/buy" className={styles.btn}>
+                  {boughtState && (
+                    <>
+                      <div
+                        className="badge bg-success text-wrap p-3"
+                        style={{ width: "30rem" }}
+                      >
+                        You have bought this product already!
+                      </div>
+                      <Link
+                      style={{marginTop: "15px"}}
+                        to={`/profile/`}
+                        onClick={deleteOfferHandler}
+                        className={styles.btn}
+                      >
+                        Delete from your offers
+                      </Link>
+                    </>
+                  )}
+                  {!boughtState && isNotOwner && (
+                    <Link
+                      to={`/catalog/${id}/buy`}
+                      onClick={buyOfferHandler}
+                      className={styles.btn}
+                    >
                       Buy
                     </Link>
                   )}
                   {isOwner && (
                     <>
-                      <Link to={`/catalog/${id}/edit`} state={{...offer}} className={styles.btn}>
+                      <Link
+                        to={`/catalog/${id}/edit`}
+                        state={{ ...offer }}
+                        className={styles.btn}
+                      >
                         Edit
                       </Link>
-                      <Link to={`/catalog/${id}/delete`} onClick={deleteOfferHandler} className={styles.btn}>
+                      <Link
+                        to={`/catalog/${id}/delete`}
+                        onClick={deleteOfferHandler}
+                        className={styles.btn}
+                      >
                         Delete
                       </Link>
                     </>
@@ -72,7 +115,7 @@ export const OfferDetailsCompnent = () => {
                 </div>
                 <div className="mb-4">
                   <div className="mr-4 mb-2">
-                  <h3 className="tm-text-gray-dark mb-3">Product info:</h3>
+                    <h3 className="tm-text-gray-dark mb-3">Product info:</h3>
 
                     <span className="tm-text-gray-dark">Price: </span>
                     <span className="tm-text-primary">{offer.price}lv</span>

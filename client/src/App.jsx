@@ -16,6 +16,7 @@ import { AddOfferForm } from "./components/Offers/AddOfferForm";
 import { createOffer, deleteOffer, editOffer } from "./service/offersService";
 import RequireAuth from "./components/requireAuth";
 import { EditOfferForm } from "./components/Offers/EditOfferForm";
+import { Profile } from "./components/Profile/Profile";
 
 function App() {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ function App() {
       return;
     }
     try {
-      const res = { ...values, ownerId: authInfo.uid };
+      const res = { ...values, ownerId: authInfo.uid, bought: false,};
       await createOffer(res);
       navigate("/");
     } catch (err) {
@@ -75,7 +76,7 @@ function App() {
   };
 
   const editOfferSubmitHandler = async (values,id) => {
-    const emptyFields = Object.values(values).some((x) => x == "");
+    const emptyFields = Object.values(values).some((x) => x === '');
     if (emptyFields) {
       setError("All fields are mandatory!");
       setTimeout(() => {
@@ -108,7 +109,9 @@ function App() {
           }
         ></Route>
         <Route element={<RequireAuth />}>
+          <Route path="/profile" element={<Profile/>}></Route>
           <Route path="/logout" element={<HeroSection />}></Route>
+          <Route path="/catalog/:id/buy" element={<OfferDetailsCompnent/>}></Route>
           <Route
             path="/catalog/:id/delete"
             element={<AllOfferComponents />}

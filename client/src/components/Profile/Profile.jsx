@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
-import { Offer } from "./OfferComponent";
-import { LoadingSpinner } from "../Home/LoadingSpinner";
+import { useState, useEffect, useContext } from "react";
 import { getAllOffers } from "../../service/offersService";
-import { NoOffersYet } from "./NoOffersYet";
+import AuthContext from "../../contexts/authContext";
+import { LoadingSpinner } from "../Home/LoadingSpinner";
+import { Offer } from "../Offers/OfferComponent";
+import { NoOffersYet } from "../Offers/NoOffersYet";
 
-export const AllOfferComponents = () => {
+export const Profile = () => {
+    const { authInfo } = useContext(AuthContext)
     const [loadingSpinnerState, setLoadingSpinner] = useState(false);
     const [showNoOffers, setShowNoOffers] = useState(false)
     const [offers, setNewOffers] = useState([]);
@@ -12,9 +14,9 @@ export const AllOfferComponents = () => {
       setLoadingSpinner(true);
       getAllOffers()
       .then(res => {
-        const unBoughtOffers = res.filter(x => x.data.bought == false)
-        setNewOffers(unBoughtOffers);
-        if (res.filter(x => x.data.bought == false).length < 1){
+        const boughtOffers = res.filter(x => x.data.boughtBy == authInfo.uid)
+        setNewOffers(boughtOffers);
+        if (res.filter(x => x.data.boughtBy == authInfo.uid).length < 1){
           setLoadingSpinner(false)
           setShowNoOffers(true)
         } else {
@@ -28,12 +30,12 @@ export const AllOfferComponents = () => {
       <>
         <div className="container-fluid tm-container-content tm-mt-60">
           <div className="row mb-4">
-            <h2 className="col-6 tm-text-primary">All Offers</h2>
+            <h2 className="col-6 tm-text-primary">Bought products</h2>
           </div>
         </div>
         <div className="row tm-mb-90 tm-gallery">
           {loadingSpinnerState && <LoadingSpinner />}
-          {showNoOffers && <NoOffersYet/> || offers.filter(x => x.data.bought == false).map((offer) => (
+          {showNoOffers && <NoOffersYet/> || offers.map((offer) => (
             <Offer key={offer.id} {...offer.data} id={offer.id}/>
           ))}
         </div>
