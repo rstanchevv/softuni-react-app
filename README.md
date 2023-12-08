@@ -8,7 +8,7 @@ For the purpose of storing information and authentication/authorization it was u
 
 # Roles
 
-Non-authenticated users can visit the application and are authorized to see:
+Non-authenticated users can visit the application and are authorized to see and use:
 
     * Register - allows the user to Register and perform authenticated operations afterwards
     * Login - allows the user to Login with an existing account and perform authenticated operations afterwards
@@ -32,3 +32,18 @@ Authenticated users (owners) can visit the application and are authorized to see
     * Offer details delete - functionality that allows the user to delete an offer that is under their ownership;
     * Bought offer delete - funcionaliy that allows the buyer to delete the offer from their bought list.
     
+
+# Routes
+
+* Routes
+    * / - Displays home page;
+    * /catalog - Displays all offers;
+    * /login - Displays Login page;
+    * /register - Displays Register page;
+    * /catalog/:id - Displays specific offer's details
+    * /profile - Displays user's profile data and the offers that have been bought so far;
+    * /catalog/:id/edit - Displays a form in which the the owner of the offer could edit the offer's details
+    * /catalog/:id/delete - Deletes the respective offer (only for owners)
+    * /catalog/:id/buy - Displays the same offer with a label that it has been bought already.
+    * /add-offer - Displays a form in which authenticated users could create an offer
+
