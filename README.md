@@ -3,7 +3,7 @@ React Softuni App is an application that has been developed for the exam at the 
 # OfferHub
 
 The application represents a SPA application where users could see/post/edit/delete/buy offers.
-For the purpose of Front-End development it was used React.js.
+For the purpose of Front-End development it was used React.js with a building tool Vite.
 For the purpose of storing information and authentication/authorization it was used Firestore.
 
 # Roles
@@ -46,4 +46,21 @@ Authenticated users (owners) can visit the application and are authorized to see
     * /catalog/:id/delete - Deletes the respective offer (only for owners)
     * /catalog/:id/buy - Displays the same offer with a label that it has been bought already.
     * /add-offer - Displays a form in which authenticated users could create an offer
+
+# How to run the project
+
+In order to run the project on your own, you need to run the following commands:
+
+* npm init
+* npm run build;
+* npm run dev;
+
+Once the last command has been exectued, the terminal will display the port at which you could access the application.
+
+#Firebase hosting
+
+The applications has also been published on a free hosting provided by Firebase.
+URL: https://testproject-4e7a7.web.app/
+
+Please note that the application stored on Firebase might differ from the source code in GitHub as we cannot ensure that the latest version will be available as soon as developed.
 
