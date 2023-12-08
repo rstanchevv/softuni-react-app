@@ -17,6 +17,7 @@ import { createOffer, deleteOffer, editOffer } from "./service/offersService";
 import RequireAuth from "./components/requireAuth";
 import { EditOfferForm } from "./components/Offers/EditOfferForm";
 import { Profile } from "./components/Profile/Profile";
+import { NotFound } from "./components/notFound";
 
 function App() {
   const navigate = useNavigate();
@@ -143,6 +144,7 @@ function App() {
         ></Route>
         <Route path="/catalog" element={<AllOfferComponents />}></Route>
         <Route path="/catalog/:id" element={<OfferDetailsCompnent />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
       <Footer />
     </AuthContext.Provider>

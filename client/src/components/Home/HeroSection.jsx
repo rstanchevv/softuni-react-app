@@ -36,7 +36,7 @@ export const HeroSection = () => {
         <Link className="btn btn-primary btn-lg px-4 gap-3" href="#" role="button" to="/login">
           I have an account!
         </Link>
-        <Link className="btn btn-outline-secondary btn-lg px-4" href="#" role="button" to="/register">
+        <Link style={{marginLeft: '10px'}}className="btn btn-outline-secondary btn-lg px-4" href="#" role="button" to="/register">
           I am new!
         </Link>
       </div>
