@@ -46,7 +46,6 @@ export const OfferDetailsCompnent = () => {
   const deleteOfferHandler = async () => {
     try {
       await deleteOffer(id);
-      navigate("/catalog");
     } catch (err) {
       console.log(err);
     }
