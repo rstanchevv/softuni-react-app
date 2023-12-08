@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <footer id="sticky-footer" className="flex-shrink-0 py-4 bg-dark text-white-50 fixed-bottom">
+    <footer id="sticky-footer" className="flex-shrink-0 py-4 bg-dark text-white-50 fixed-bottom" style={{marginTop: '10px'}}>
     <div className="container text-center">
       <small>Copyright &copy; OfferHub</small>
     </div>
