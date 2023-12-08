@@ -52,8 +52,8 @@ Authenticated users (owners) can visit the application and are authorized to see
 In order to run the project on your own, you need to run the following commands:
 
 * npm init
-* npm run build;
-* npm run dev;
+* npm run build
+* npm run dev
 
 Once the last command has been exectued, the terminal will display the port at which you could access the application.
 
