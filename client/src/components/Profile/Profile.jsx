@@ -4,7 +4,7 @@ import AuthContext from "../../contexts/authContext";
 import { LoadingSpinner } from "../Home/LoadingSpinner";
 import { Offer } from "../Offers/OfferComponent";
 import { NoOffersYet } from "../Offers/NoOffersYet";
-import styles from './Profile.module.css'
+import styles from "./Profile.module.css";
 
 export const Profile = () => {
   const { authInfo } = useContext(AuthContext);
@@ -28,10 +28,14 @@ export const Profile = () => {
 
   return (
     <>
-      <div className="card" style={{width: '12rem'}}>
-        <img className="card-img-top" src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png" alt="Card image cap" />
+      <div className="card" style={{ width: "12rem" }}>
+        <img
+          className="card-img-top"
+          src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
+          alt="Card image cap"
+        />
         <div className="card-body">
-          <div className="card-text" style={{fontWeight: 'bold'}}>
+          <div className="card-text" style={{ fontWeight: "bold" }}>
             Current user: <p className={styles.cardEmail}>{authInfo.email}</p>
           </div>
         </div>
@@ -41,15 +45,17 @@ export const Profile = () => {
           <h2 className="col-6 tm-text-primary">Bought products</h2>
         </div>
       </div>
-      <div className="row tm-mb-90 tm-gallery">
-        {loadingSpinnerState && <LoadingSpinner />}
-        {showNoOffers ? (
-          <NoOffersYet />
-        ) : (
-          offers.map((offer) => (
-            <Offer key={offer.id} {...offer.data} id={offer.id} />
-          ))
-        )}
+      <div className="card">
+        <div className="row tm-mb-90 tm-gallery">
+          {loadingSpinnerState && <LoadingSpinner />}
+          {showNoOffers ? (
+            <NoOffersYet />
+          ) : (
+            offers.map((offer) => (
+              <Offer key={offer.id} {...offer.data} id={offer.id} />
+            ))
+          )}
+        </div>
       </div>
     </>
   );
