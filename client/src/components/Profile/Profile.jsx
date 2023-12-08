@@ -4,6 +4,7 @@ import AuthContext from "../../contexts/authContext";
 import { LoadingSpinner } from "../Home/LoadingSpinner";
 import { Offer } from "../Offers/OfferComponent";
 import { NoOffersYet } from "../Offers/NoOffersYet";
+import styles from './Profile.module.css'
 
 export const Profile = () => {
   const { authInfo } = useContext(AuthContext);
@@ -27,12 +28,12 @@ export const Profile = () => {
 
   return (
     <>
-      <div class="card" style={{width: '12rem'}}>
-        <img class="card-img-top" src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png" alt="Card image cap" />
-        <div class="card-body">
-          <p class="card-text" style={{fontWeight: 'bold'}}>
-            Current user: <p style={{color: 'green'}}>{authInfo.email}</p>
-          </p>
+      <div className="card" style={{width: '12rem'}}>
+        <img className="card-img-top" src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png" alt="Card image cap" />
+        <div className="card-body">
+          <div className="card-text" style={{fontWeight: 'bold'}}>
+            Current user: <p className={styles.cardEmail}>{authInfo.email}</p>
+          </div>
         </div>
       </div>
       <div className="container-fluid tm-container-content tm-mt-60">
