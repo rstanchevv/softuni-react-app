@@ -24,21 +24,7 @@ export const Navigation = ({ signOutHandler }) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
-            <li
-              className="nav-item"
-              hidden={!authInfo ? true : ""}
-            >
-              <Link
-                className={
-                  location.pathname == "/add-offer"
-                    ? "nav-link nav-link-6 active"
-                    : "nav-link nav-link-6"
-                }
-                to="/add-offer"
-              >
-                Add offer
-              </Link>
-            </li>
+            {" "}
             <li className="nav-item">
               <Link
                 className={
@@ -52,58 +38,73 @@ export const Navigation = ({ signOutHandler }) => {
                 Offers
               </Link>
             </li>
-            <li className="nav-item" hidden={authInfo ? true : ""}>
-              <Link
-                className={
-                  location.pathname == "/login"
-                    ? "nav-link nav-link-2 active"
-                    : "nav-link nav-link-2"
-                }
-                to="/login"
-              >
-                Login
-              </Link>
-            </li>
-            <li className="nav-item" hidden={authInfo ? true : ""}>
-              <Link
-                className={
-                  location.pathname == "/register"
-                    ? "nav-link nav-link-3 active"
-                    : "nav-link nav-link-3"
-                }
-                to="/register"
-              >
-                Sign up
-              </Link>
-            </li>
-            <li className="nav-item" hidden={!authInfo ? true : ""}>
-              <Link
-                className={
-                  location.pathname == "/profile"
-                    ? "nav-link nav-link-4 active"
-                    : "nav-link nav-link-4"
-                }
-                to="/profile"
-              >
-                Profile
-              </Link>
-            </li>
-            <li
-              className="nav-item"
-              hidden={!authInfo ? true : ""}
-              onClick={signOutHandler}
-            >
-              <Link
-                className={
-                  location.pathname == "/logout"
-                    ? "nav-link nav-link-5 active"
-                    : "nav-link nav-link-5"
-                }
-                to="/"
-              >
-                Logout
-              </Link>
-            </li>
+            {authInfo ? (
+              <>
+                <li className="nav-item">
+                  <Link
+                    className={
+                      location.pathname == "/add-offer"
+                        ? "nav-link nav-link-6 active"
+                        : "nav-link nav-link-6"
+                    }
+                    to="/add-offer"
+                  >
+                    Add offer
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={
+                      location.pathname == "/profile"
+                        ? "nav-link nav-link-4 active"
+                        : "nav-link nav-link-4"
+                    }
+                    to="/profile"
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li className="nav-item" onClick={signOutHandler}>
+                  <Link
+                    className={
+                      location.pathname == "/logout"
+                        ? "nav-link nav-link-5 active"
+                        : "nav-link nav-link-5"
+                    }
+                    to="/"
+                  >
+                    Logout
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link
+                    className={
+                      location.pathname == "/login"
+                        ? "nav-link nav-link-2 active"
+                        : "nav-link nav-link-2"
+                    }
+                    to="/login"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={
+                      location.pathname == "/register"
+                        ? "nav-link nav-link-3 active"
+                        : "nav-link nav-link-3"
+                    }
+                    to="/register"
+                  >
+                    Sign up
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

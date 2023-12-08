@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import styles from "./Login.module.css";
 
@@ -6,6 +7,16 @@ export const Login = ({ loginSubmitHandler }) => {
     email: "",
     password: "",
   });
+
+  const [passwordError, setPasswordError] = useState('');
+
+  const passwordValidator = () => {
+    if (values.password.length < 6) {
+      setPasswordError('Password should be at least 6 characters')
+    } else {
+      setPasswordError('')
+    }
+  }
 
   return (
     <form onSubmit={submitHandler}>
@@ -34,10 +45,12 @@ export const Login = ({ loginSubmitHandler }) => {
           name="password"
           onChange={changeHandler}
           value={values["password"]}
-        />
-      </div>
+          onBlur={passwordValidator}
+          />
+          {setPasswordError && <p className={styles.errorMessage}>{passwordError}</p>}
+        </div>
       <div className={styles.btnContainer}>
-        <button className="btn btn-primary">Login</button>
+        <button disabled={passwordError}className="btn btn-primary">Login</button>
       </div>
     </form>
   );

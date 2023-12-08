@@ -1,7 +1,9 @@
+import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import styles from "./Register.module.css";
 
 export const Register = ({ registerSubmitHandler }) => {
+  const [errors, setErrors] = useState({});
   const { values, changeHandler, submitHandler } = useForm(
     registerSubmitHandler,
     {
@@ -10,6 +12,43 @@ export const Register = ({ registerSubmitHandler }) => {
       rePassword: "",
     }
   );
+
+  const passwordValidator = () => {
+    if (values.password.length < 6) {
+      setErrors((state) => ({
+        ...state,
+        password: "Password should be at least 6 characters",
+      }));
+    } else {
+      if (errors.password) {
+        setErrors((state) => ({ ...state, password: "" }));
+      }
+    }
+  };
+
+  const rePasswordValidator = () => {
+    if (values.password !== values.rePassword) {
+      setErrors((state) => ({
+        ...state,
+        rePassword: "Passwords don't match!",
+      }));
+    } else {
+      if (errors.rePassword) {
+        setErrors((state) => ({ ...state, rePassword: "" }));
+      }
+    }
+    if (values.rePassword.length < 6) {
+      setErrors((state) => ({
+        ...state,
+        rePassword: "Repeat password should be at least 6 characters",
+      }));
+    } else {
+      if (errors.rePassword) {
+        setErrors((state) => ({ ...state, rePassword: "" }));
+      }
+    }
+  };
+
   return (
     <form onSubmit={submitHandler}>
       <div className={styles.inputFields}>
@@ -40,7 +79,11 @@ export const Register = ({ registerSubmitHandler }) => {
           name="password"
           value={values["password"]}
           onChange={changeHandler}
+          onBlur={passwordValidator}
         />
+        {errors.password && (
+          <p className={styles.errorMessage}>{errors.password}</p>
+        )}
       </div>
       <div className={styles.inputFields}>
         <label htmlFor="rePassword" className="form-label">
@@ -53,10 +96,14 @@ export const Register = ({ registerSubmitHandler }) => {
           name="rePassword"
           value={values["rePassword"]}
           onChange={changeHandler}
-        />
-      </div>
+          onBlur={rePasswordValidator}
+          />
+          {errors.rePassword && (
+            <p className={styles.errorMessage}>{errors.rePassword}</p>
+          )}
+        </div>
       <div className={styles.btnContainer}>
-        <button className="btn btn-primary">Register</button>
+        <button disabled={Object.values(errors).some(x => x !== '')} className="btn btn-primary">Register</button>
       </div>
     </form>
   );

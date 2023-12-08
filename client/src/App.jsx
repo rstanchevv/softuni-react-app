@@ -64,7 +64,7 @@ function App() {
       return;
     }
     try {
-      const res = { ...values, ownerId: authInfo.uid, bought: false,};
+      const res = { ...values, ownerId: authInfo.uid, bought: false };
       await createOffer(res);
       navigate("/");
     } catch (err) {
@@ -75,8 +75,8 @@ function App() {
     }
   };
 
-  const editOfferSubmitHandler = async (values,id) => {
-    const emptyFields = Object.values(values).some((x) => x === '');
+  const editOfferSubmitHandler = async (values, id) => {
+    const emptyFields = Object.values(values).some((x) => x === "");
     if (emptyFields) {
       setError("All fields are mandatory!");
       setTimeout(() => {
@@ -104,19 +104,25 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            (authInfo && <HeroSectionAuthenticated />) || <HeroSection />
-          }
+          element={authInfo ? <HeroSectionAuthenticated /> : <HeroSection />}
         ></Route>
         <Route element={<RequireAuth />}>
-          <Route path="/profile" element={<Profile/>}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
           <Route path="/logout" element={<HeroSection />}></Route>
-          <Route path="/catalog/:id/buy" element={<OfferDetailsCompnent/>}></Route>
+          <Route
+            path="/catalog/:id/buy"
+            element={<OfferDetailsCompnent />}
+          ></Route>
           <Route
             path="/catalog/:id/delete"
             element={<AllOfferComponents />}
           ></Route>
-          <Route path="/catalog/:id/edit" element={<EditOfferForm editOfferSubmitHandler={editOfferSubmitHandler}/>}></Route>
+          <Route
+            path="/catalog/:id/edit"
+            element={
+              <EditOfferForm editOfferSubmitHandler={editOfferSubmitHandler} />
+            }
+          ></Route>
           <Route
             path="/add-offer"
             element={

@@ -35,7 +35,7 @@ export const Profile = () => {
         </div>
         <div className="row tm-mb-90 tm-gallery">
           {loadingSpinnerState && <LoadingSpinner />}
-          {showNoOffers && <NoOffersYet/> || offers.map((offer) => (
+          {showNoOffers ? <NoOffersYet/> : offers.map((offer) => (
             <Offer key={offer.id} {...offer.data} id={offer.id}/>
           ))}
         </div>
