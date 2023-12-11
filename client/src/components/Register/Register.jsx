@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import styles from "./Register.module.css";
 
 export const Register = ({ registerSubmitHandler }) => {
-  const emailField = useRef(null)
   const [errors, setErrors] = useState({});
   const { values, changeHandler, submitHandler } = useForm(
     registerSubmitHandler,
@@ -13,9 +12,6 @@ export const Register = ({ registerSubmitHandler }) => {
       rePassword: "",
     }
   );
-  useEffect(() => {
-    emailField.current.focus();
-  })
 
   const passwordValidator = () => {
     if (values.password.length < 6) {
@@ -65,7 +61,6 @@ export const Register = ({ registerSubmitHandler }) => {
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
           name="email"
-          ref={emailField}
           value={values["email"]}
           onChange={changeHandler}
         />

@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import styles from "./Login.module.css";
 
 export const Login = ({ loginSubmitHandler }) => {
-  const emailField = useRef(null)
   const { values, changeHandler, submitHandler } = useForm(loginSubmitHandler, {
     email: "",
     password: "",
@@ -11,9 +10,6 @@ export const Login = ({ loginSubmitHandler }) => {
 
   const [passwordError, setPasswordError] = useState('');
 
-  useEffect(() => {
-    emailField.current.focus()
-  }, [])
 
   const passwordValidator = () => {
     if (values.password.length < 6) {
@@ -30,7 +26,6 @@ export const Login = ({ loginSubmitHandler }) => {
           Email address
         </label>
         <input
-        ref={emailField}
           type="email"
           className="form-control"
           id="exampleInputEmail1"
